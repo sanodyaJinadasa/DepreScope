@@ -100,6 +100,88 @@ SHAP-based error analysis uncovered a specific, reproducible bias: the model und
  
 ### 1. Clone the repository
  
+### 2. Install dependencies
+ 
+```bash
+pip install -r requirements.txt
+```
+ 
+**`requirements.txt`** should include:
+```
+transformers
+torch
+scikit-learn
+shap
+pandas
+numpy
+gradio
+matplotlib
+joblib
+```
+ 
+### 3. Run the notebook
+ 
+Open `notebooks/Explainable_Depression_Detection_FULL.ipynb` in Google Colab or Jupyter, and run all cells top to bottom. GPU is strongly recommended for the transformer training step.
+ 
+### 4. Launch the interactive app
+ 
+```bash
+python app/gradio_app.py
+```
+ 
+This loads the saved model artifacts and launches a local (or shareable) Gradio link with both the **Predict** and **Analysis Dashboard** tabs.
+ 
+### 5. Try a prediction
+ 
+```python
+from app.predict import predict_depression
+ 
+result = predict_depression("I feel hopeless and empty inside.")
+print(result)
+# {'predicted_label': '1', 'probability_class_0': 0.006, 'probability_class_1': 0.994}
+```
+ 
+---
+ 
+## ⚠️ Limitations
+ 
+- **Label validity** — Reddit subreddit-based labels reflect community membership, not clinical diagnosis.
+- **Lexical shortcut bias** — demonstrated above; the model can be misled by individual high-impact tokens.
+- **User-level leakage** — the dataset has no author ID, so potential leakage across train/test splits from the same user (via different posts) could not be directly measured. Exact-duplicate posts were removed as a partial mitigation.
+- **Sampling constraints** — due to compute limits, transformer training/evaluation used stratified subsets rather than the full 2.47M-row dataset.
+---
+ 
+## 🔮 Future Work
+ 
+- Targeted data augmentation to directly address the "lost interest" lexical bias
+- Explore domain-specific pretraining (e.g., MentalBERT) for mental-health text
+- Source/validate a dataset with author IDs to properly test user-level leakage
+- Scale training to the full dataset with cloud GPU infrastructure
+- Broaden explainability tooling (e.g., attention visualization, LIME) to cross-validate SHAP findings
+---
+ 
+## 📚 References
+ 
+1. V. Sanh, L. Debut, J. Chaumond, and T. Wolf, "DistilBERT, a distilled version of BERT," arXiv:1910.01108, 2019.
+2. J. Devlin et al., "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding," NAACL-HLT, 2019.
+3. S. M. Lundberg and S.-I. Lee, "A Unified Approach to Interpreting Model Predictions," NeurIPS, 2017.
+4. F. Pedregosa et al., "Scikit-learn: Machine Learning in Python," JMLR, 2011.
+5. T. Wolf et al., "Transformers: State-of-the-Art Natural Language Processing," EMNLP, 2020.
+---
+ 
+## 👤 Author
+ 
+**P.M. Sanodya V. Jinadasa**
+Department of Data Science, Faculty of Computing
+Sabaragamuwa University of Sri Lanka
+Capstone Project II (DS3206)
+ 
+---
+ 
+## 📄 License
+ 
+This project is for academic and research purposes. Please cite appropriately if reused.
+ 
 ```bash
 git clone https://github.com/<your-username>/explainable-depression-detection.git
 cd explainable-depression-detection
