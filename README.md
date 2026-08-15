@@ -29,3 +29,30 @@ This project builds a binary text classifier for depression-related language and
   - 📊 **Analysis Dashboard** — model comparison charts, confusion matrix, dataset statistics
 - Documented, evidence-backed model limitations rather than hidden failure cases
 ---
+## 📊 Results
+ 
+Evaluated on a matched 20,000-post test subset (identical rows for both models):
+ 
+| Model | Accuracy | Precision | Recall | F1-Score | ROC-AUC |
+|---|---|---|---|---|---|
+| TF-IDF + LinearSVC (Baseline) | 0.9354 | 0.797 | 0.896 | 0.844 | 0.975 |
+| **Fine-Tuned DistilBERT** | **0.9548** | **0.878** | **0.892** | **0.885** | **0.983** |
+ 
+DistilBERT outperforms the classical baseline across every metric — a measurable **+4.1 F1-point** improvement.
+ 
+---
+ 
+## 🔍 Key Finding: The "Lost Interest" Blind Spot
+ 
+SHAP-based error analysis uncovered a specific, reproducible bias: the model under-detects **anhedonia** (loss of interest — a core depression symptom) when phrased as *"lost interest,"* even though it reliably catches other high-intensity depressive language.
+ 
+| Test sentence | Predicted probability (Depression) |
+|---|---|
+| "I lost interest in everything." | 0.55% |
+| "I have a lot of interest in everything." | 0.11% |
+| "I lost my job and my friends." | 71.34% |
+| "I feel hopeless and empty inside." | 99.43% |
+ 
+**Root cause:** the token *"interest"* carries a strong, largely context-independent negative attribution (SHAP ≈ −0.08) — a lexical shortcut rather than genuine compositional understanding of the phrase "loss of interest." This demonstrates that high aggregate accuracy can coexist with systematic, symptom-specific blind spots — exactly why explainability matters in sensitive domains.
+ 
+---
