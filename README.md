@@ -56,3 +56,52 @@ SHAP-based error analysis uncovered a specific, reproducible bias: the model und
 **Root cause:** the token *"interest"* carries a strong, largely context-independent negative attribution (SHAP ≈ −0.08) — a lexical shortcut rather than genuine compositional understanding of the phrase "loss of interest." This demonstrates that high aggregate accuracy can coexist with systematic, symptom-specific blind spots — exactly why explainability matters in sensitive domains.
  
 ---
+
+## 🗂️ Project Structure
+ 
+```
+├── notebooks/
+│   └── Explainable_Depression_Detection_FULL.ipynb   # Full training & analysis pipeline
+├── app/
+│   └── gradio_app.py                                  # Interactive Predict + Dashboard app
+├── artifacts/                                          # Saved model, tokenizer, vectorizer, metrics
+│   ├── model/
+│   ├── vectorizer.pkl
+│   ├── feature_svm.pkl
+│   └── metrics.json
+├── reports/
+│   └── Capstone_Report.docx                            # Full written report
+├── requirements.txt
+└── README.md
+```
+ 
+---
+ 
+## 🛠️ Tech Stack
+ 
+- **Language:** Python 3
+- **ML / NLP:** PyTorch, HuggingFace Transformers, scikit-learn
+- **Explainability:** SHAP
+- **Data processing:** pandas, NumPy
+- **Web app:** Gradio
+- **Environment:** Google Colab (GPU)
+---
+ 
+## 📦 Dataset
+ 
+- **Source:** [Reddit Depression Dataset (Kaggle)](https://www.kaggle.com/datasets/rishabhkausish/reddit-depression-dataset)
+- **Raw size:** 2,470,778 posts
+- **Fields used:** `title` + `body` (combined)
+- **Class balance (post-cleaning):** 80.5% Normal / 19.5% Depression
+- **Split:** 70% / 15% / 15% (train / validation / test), stratified
+---
+ 
+## 🚀 Getting Started
+ 
+### 1. Clone the repository
+ 
+```bash
+git clone https://github.com/<your-username>/explainable-depression-detection.git
+cd explainable-depression-detection
+```
+ 
