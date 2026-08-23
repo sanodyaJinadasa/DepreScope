@@ -1,10 +1,11 @@
 import { NavLink } from "react-router-dom";
-import { LayoutDashboard, MessageSquareText, GitCompareArrows, Info, Brain } from "lucide-react";
+import { LayoutDashboard, MessageSquareText, GitCompareArrows, Info, Brain, BarChart3 } from "lucide-react";
 
 const navItems = [
   { to: "/", label: "Dashboard", icon: LayoutDashboard },
   { to: "/predict", label: "Predict", icon: MessageSquareText },
   { to: "/compare", label: "Bias Probe Lab", icon: GitCompareArrows },
+  { to: "/charts", label: "Model Insights", icon: BarChart3 },
   { to: "/about", label: "About", icon: Info },
 ];
 
@@ -26,9 +27,10 @@ export default function Sidebar() {
             to={to}
             end={to === "/"}
             className={({ isActive }) =>
-              `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${isActive
-                ? "bg-indigo-600 text-white"
-                : "text-slate-400 hover:bg-slate-800 hover:text-white"
+              `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                isActive
+                  ? "bg-indigo-600 text-white"
+                  : "text-slate-400 hover:bg-slate-800 hover:text-white"
               }`
             }
           >

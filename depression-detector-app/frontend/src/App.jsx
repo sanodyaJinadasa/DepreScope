@@ -3,6 +3,7 @@ import Sidebar from "./components/Sidebar";
 import Dashboard from "./pages/Dashboard";
 import Predict from "./pages/Predict";
 import BiasProbeLab from "./pages/BiasProbeLab";
+import ModelCharts from "./pages/ModelCharts";
 import About from "./pages/About";
 
 export default function App() {
@@ -15,6 +16,7 @@ export default function App() {
             <Route path="/" element={<Dashboard />} />
             <Route path="/predict" element={<Predict />} />
             <Route path="/compare" element={<BiasProbeLab />} />
+            <Route path="/charts" element={<ModelCharts />} />
             <Route path="/about" element={<About />} />
           </Routes>
         </main>
