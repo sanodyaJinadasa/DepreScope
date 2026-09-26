@@ -24,9 +24,6 @@ from transformers import AutoTokenizer, AutoModelForSequenceClassification
 
 
 
-from multimodal import router as multimodal_router
-app.include_router(multimodal_router)
-
 # ============================================================
 # 1. CONFIG — change this path to where you copied your model
 # ============================================================
@@ -106,6 +103,18 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Wire in the multimodal (audio + text) router — exposed at /multimodal/*
+# Wrapped in try/except so the server still starts if librosa/joblib pipeline
+# is not yet installed (text-only features will continue to work normally).
+try:
+    from multimodal import router as multimodal_router
+    app.include_router(multimodal_router)
+    print("Multimodal (audio+text) router loaded at /multimodal/")
+except Exception as _mm_err:
+    print(f"[WARNING] Multimodal router not loaded: {_mm_err}")
+    print("  → Install librosa and place fusion_pipeline.pkl in backend/models/ to enable it.")
+
 
 # ============================================================
 # 5. REQUEST / RESPONSE SCHEMAS
