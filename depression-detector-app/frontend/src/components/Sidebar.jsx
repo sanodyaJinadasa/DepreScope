@@ -7,17 +7,20 @@ import {
   BarChart3,
   ShieldAlert,
   Info,
+  AudioLines,
 } from "lucide-react";
 
 const NAV_ITEMS = [
   { to: "/", label: "Dashboard", icon: LayoutDashboard, end: true },
   { to: "/dataset", label: "Dataset", icon: Database },
-  { to: "/predict", label: "Predict", icon: Sparkles },
+  { to: "/predict", label: "Text Predict", icon: Sparkles },
+  { to: "/clinical-predict", label: "Voice Predict", icon: AudioLines },
   { to: "/compare", label: "Bias Probe Lab", icon: FlaskConical },
   { to: "/model-comparison", label: "Model Comparison", icon: BarChart3 },
   { to: "/limitations", label: "Limitations", icon: ShieldAlert },
   { to: "/about", label: "About", icon: Info },
 ];
+
 
 export default function Sidebar() {
   return (

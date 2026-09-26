@@ -22,6 +22,11 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 
+
+
+from multimodal import router as multimodal_router
+app.include_router(multimodal_router)
+
 # ============================================================
 # 1. CONFIG — change this path to where you copied your model
 # ============================================================
@@ -253,3 +258,4 @@ def get_dataset_stats():
             {"word": "hopeless", "count": 19800},
         ],
     }
+
