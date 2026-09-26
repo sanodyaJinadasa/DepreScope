@@ -1,2 +1,4 @@
 depression_detector_artifacts
 depression-detector-app/backend/artifacts
+.venv
+node_modules

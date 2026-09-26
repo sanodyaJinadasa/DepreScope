@@ -20,23 +20,31 @@ from fastapi import APIRouter, File, Form, HTTPException, UploadFile
 from pydantic import BaseModel
 from transformers import DistilBertModel, DistilBertTokenizer
 
+from pathlib import Path
+
 router = APIRouter(prefix="/multimodal", tags=["multimodal"])
 
 # ---------------------------------------------------------------------------
-# Load everything ONCE at import time (not per-request) — this is the same
-# pattern your existing DistilBERT text model likely already uses.
+# Load everything ONCE at import time (not per-request)
 # ---------------------------------------------------------------------------
 
-FUSION_PIPELINE_PATH = os.environ.get(
-    "FUSION_PIPELINE_PATH", "models/fusion_pipeline.pkl"
-)
+BASE_DIR = Path(__file__).resolve().parent
+DEFAULT_PIPELINE_PATH = BASE_DIR / "models" / "fusion_pipeline.pkl"
+_env_path = os.environ.get("FUSION_PIPELINE_PATH")
+if _env_path:
+    FUSION_PIPELINE_PATH = Path(_env_path)
+    if not FUSION_PIPELINE_PATH.is_absolute():
+        FUSION_PIPELINE_PATH = (BASE_DIR / FUSION_PIPELINE_PATH).resolve()
+else:
+    FUSION_PIPELINE_PATH = DEFAULT_PIPELINE_PATH
 
 try:
-    fusion_pipeline = joblib.load(FUSION_PIPELINE_PATH)
-except FileNotFoundError:
+    fusion_pipeline = joblib.load(str(FUSION_PIPELINE_PATH))
+    print(f"[multimodal] Successfully loaded fusion pipeline from {FUSION_PIPELINE_PATH}")
+except Exception as e:
     fusion_pipeline = None
     print(
-        f"[multimodal] WARNING: {FUSION_PIPELINE_PATH} not found — "
+        f"[multimodal] WARNING: Could not load {FUSION_PIPELINE_PATH} ({e}) — "
         "/multimodal/predict will return 503 until it's in place."
     )
 
@@ -59,11 +67,11 @@ def extract_audio_features(wav_path: str) -> np.ndarray:
         y, fmin=librosa.note_to_hz("C2"), fmax=librosa.note_to_hz("C7")
     )
     f0_voiced = f0[~np.isnan(f0)]
-    feats["pitch_mean"] = np.mean(f0_voiced) if len(f0_voiced) > 0 else 0
-    feats["pitch_std"] = np.std(f0_voiced) if len(f0_voiced) > 0 else 0
+    feats["pitch_mean"] = float(np.mean(f0_voiced)) if len(f0_voiced) > 0 else 0.0
+    feats["pitch_std"] = float(np.std(f0_voiced)) if len(f0_voiced) > 0 else 0.0
 
     tempo, _ = librosa.beat.beat_track(y=y, sr=sr)
-    feats["tempo"] = tempo
+    feats["tempo"] = float(np.atleast_1d(tempo)[0])
 
     rms = librosa.feature.rms(y=y)[0]
     feats["energy_mean"] = np.mean(rms)
@@ -173,6 +181,10 @@ async def predict(
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Inference failed: {e}")
     finally:
-        os.remove(tmp_path)
+        if 'tmp_path' in locals() and os.path.exists(tmp_path):
+            try:
+                os.remove(tmp_path)
+            except Exception:
+                pass
 
     return result
