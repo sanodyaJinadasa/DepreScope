@@ -15,10 +15,10 @@ export default function About() {
           points on a fair, matched test subset, and SHAP-based error analysis was used to uncover
           a documented lexical bias affecting detection of anhedonia symptoms.
         </p>
-        <p className="text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-4 py-3">
+        {/* <p className="text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-4 py-3">
           This is a research prototype for academic purposes only — not a diagnostic or clinical
           tool.
-        </p>
+        </p> */}
         <div className="pt-2 border-t border-slate-100">
           <p className="font-medium text-slate-900">Sanodya</p>
           <p className="text-slate-500">

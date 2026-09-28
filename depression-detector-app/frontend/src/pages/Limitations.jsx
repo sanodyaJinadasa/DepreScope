@@ -65,13 +65,13 @@ export default function Limitations() {
         ))}
       </div>
 
-      <div className="rounded-xl border border-amber-200 bg-amber-50 p-5">
+      {/* <div className="rounded-xl border border-amber-200 bg-amber-50 p-5">
         <p className="text-sm text-amber-800">
           <span className="font-semibold">Research prototype.</span> This
           system is explicitly positioned as a research and interpretability
           study, not a diagnostic or clinical tool.
         </p>
-      </div>
+      </div> */}
     </div>
   );
 }

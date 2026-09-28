@@ -35,10 +35,10 @@ export default function Predict() {
         Enter a social-media-style post to classify and explain using the fine-tuned DistilBERT model.
       </p>
 
-      <div className="bg-amber-50 border border-amber-200 text-amber-800 text-sm rounded-lg px-4 py-3 mb-6">
+      {/* <div className="bg-amber-50 border border-amber-200 text-amber-800 text-sm rounded-lg px-4 py-3 mb-6">
         <strong>Research prototype.</strong> This is not a diagnostic tool and should not be used to
         self-diagnose or diagnose others.
-      </div>
+      </div> */}
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Left: Input */}
@@ -88,11 +88,10 @@ export default function Predict() {
           {result && (
             <div>
               <span
-                className={`inline-block px-3 py-1 rounded-full text-sm font-semibold ${
-                  result.label === "Depression-like"
+                className={`inline-block px-3 py-1 rounded-full text-sm font-semibold ${result.label === "Depression-like"
                     ? "bg-rose-500/20 text-rose-300"
                     : "bg-emerald-500/20 text-emerald-300"
-                }`}
+                  }`}
               >
                 {result.label}
               </span>

@@ -54,9 +54,9 @@ export default function Sidebar() {
         ))}
       </nav>
 
-      <div className="px-5 py-4 border-t border-slate-100 text-[11px] text-slate-400 leading-relaxed">
+      {/* <div className="px-5 py-4 border-t border-slate-100 text-[11px] text-slate-400 leading-relaxed">
         Research prototype — not a diagnostic tool.
-      </div>
+      </div> */}
     </aside>
   );
 }
