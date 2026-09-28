@@ -20,7 +20,7 @@ export default function App() {
             <Route path="/" element={<Dashboard />} />
             <Route path="/dataset" element={<Dataset />} />
             <Route path="/predict" element={<Predict />} />
-            <Route path="/clinical-predict" element={<ClinicalPredict />} />
+            {/* <Route path="/clinical-predict" element={<ClinicalPredict />} /> */}
             <Route path="/compare" element={<BiasProbeLab />} />
             <Route path="/model-comparison" element={<ModelComparison />} />
             <Route path="/charts" element={<ModelCharts />} />

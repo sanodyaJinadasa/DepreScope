@@ -6,7 +6,7 @@ import {
 const STATS = [
   { label: "Transformer Accuracy", value: "95.5%", sub: "Text model (DistilBERT)" },
   { label: "Transformer F1-Score", value: "0.885", sub: "Text model — test set" },
-  { label: "Voice Model AUC", value: "0.82", sub: "Audio+Text fusion (DAIC-WOZ pilot)" },
+  // { label: "Voice Model AUC", value: "0.82", sub: "Audio+Text fusion (DAIC-WOZ pilot)" },
   { label: "Raw Dataset Size", value: "2.47M", sub: "Reddit posts" },
 ];
 
@@ -18,13 +18,13 @@ const SHORTCUTS = [
     body: "Classify free-form text with DistilBERT and get token-level SHAP explanations.",
     badge: null,
   },
-  {
-    to: "/clinical-predict",
-    icon: AudioLines,
-    title: "Voice Predict",
-    body: "Upload a .wav recording + transcript for multimodal audio+text depression screening.",
-    badge: "New",
-  },
+  // {
+  //   to: "/clinical-predict",
+  //   icon: AudioLines,
+  //   title: "Voice Predict",
+  //   body: "Upload a .wav recording + transcript for multimodal audio+text depression screening.",
+  //   badge: "New",
+  // },
   {
     to: "/dataset",
     icon: Database,
@@ -80,7 +80,7 @@ export default function Dashboard() {
       </div>
 
       {/* Modality highlight banner */}
-      <div className="rounded-xl border border-indigo-200 bg-indigo-50 p-5 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+      {/* <div className="rounded-xl border border-indigo-200 bg-indigo-50 p-5 flex flex-col sm:flex-row items-start sm:items-center gap-4">
         <div className="rounded-lg bg-indigo-100 p-3 shrink-0">
           <AudioLines className="h-5 w-5 text-indigo-700" />
         </div>
@@ -100,7 +100,7 @@ export default function Dashboard() {
         >
           Try it <ArrowRight className="h-3.5 w-3.5" />
         </Link>
-      </div>
+      </div> */}
 
       {/* Feature grid */}
       <div>
