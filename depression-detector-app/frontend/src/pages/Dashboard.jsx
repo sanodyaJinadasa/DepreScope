@@ -1,132 +1,129 @@
 import { Link } from "react-router-dom";
 import {
-  BarChart3, Database, FlaskConical, ShieldAlert, ArrowRight, AudioLines, Sparkles,
+  BarChart3, Database, FlaskConical, ShieldAlert, ArrowRight, Sparkles, TrendingUp,
 } from "lucide-react";
 
 const STATS = [
-  { label: "Transformer Accuracy", value: "95.5%", sub: "Text model (DistilBERT)" },
-  { label: "Transformer F1-Score", value: "0.885", sub: "Text model — test set" },
-  // { label: "Voice Model AUC", value: "0.82", sub: "Audio+Text fusion (DAIC-WOZ pilot)" },
-  { label: "Raw Dataset Size", value: "2.47M", sub: "Reddit posts" },
+  { label: "Transformer Accuracy", value: "95.5%", sub: "Fine-tuned DistilBERT on test set" },
+  { label: "Transformer F1-Score", value: "0.885", sub: "Balanced precision and recall" },
+  { label: "Baseline SVM F1-Score", value: "0.844", sub: "TF-IDF + Linear SVM benchmark" },
+  { label: "Raw Dataset Size", value: "2.47M", sub: "Cleaned Reddit post corpus" },
 ];
 
 const SHORTCUTS = [
   {
     to: "/predict",
     icon: Sparkles,
-    title: "Text Predict",
-    body: "Classify free-form text with DistilBERT and get token-level SHAP explanations.",
-    badge: null,
+    title: "Predict & Explain",
+    body: "Run inference on free-form text with DistilBERT and visualize token-level SHAP attributions.",
+    tag: "Core Model",
   },
-  // {
-  //   to: "/clinical-predict",
-  //   icon: AudioLines,
-  //   title: "Voice Predict",
-  //   body: "Upload a .wav recording + transcript for multimodal audio+text depression screening.",
-  //   badge: "New",
-  // },
   {
     to: "/dataset",
     icon: Database,
-    title: "Dataset",
-    body: "Class balance, post length distribution, and train/val/test split composition.",
-    badge: null,
+    title: "Dataset Analysis",
+    body: "Explore class distribution, token frequencies, and stratified train/val/test splits.",
+    tag: "Data",
   },
   {
     to: "/model-comparison",
     icon: BarChart3,
     title: "Model Comparison",
-    body: "Full metrics, confusion matrices, and overfitting check across both models.",
-    badge: null,
+    body: "Inspect head-to-head performance metrics, confusion matrices, and generalization checks.",
+    tag: "Evaluation",
   },
   {
     to: "/compare",
     icon: FlaskConical,
     title: "Bias Probe Lab",
-    body: "Live wording-sensitivity tests, including the \"lost interest\" lexical bias case.",
-    badge: null,
+    body: "Test lexical sensitivity and uncover model reliance on shortcut words like 'interest'.",
+    tag: "Interpretability",
   },
   {
     to: "/limitations",
     icon: ShieldAlert,
-    title: "Limitations",
-    body: "Known blind spots and scope, documented openly rather than left implicit.",
-    badge: null,
+    title: "Limitations & Ethics",
+    body: "Review data constraints, label validity caveats, and clinical non-diagnostic scope.",
+    tag: "Governance",
   },
 ];
 
 export default function Dashboard() {
   return (
-    <div className="p-8 space-y-8">
+    <div className="p-8 space-y-8 max-w-7xl mx-auto">
+      {/* Header */}
       <div>
-        <h1 className="text-xl font-semibold text-slate-900">Dashboard</h1>
-        <p className="mt-1 text-sm text-slate-500">
-          Explainable Depression Detection — text &amp; voice multimodal system.
-        </p>
+        <div className="flex items-center gap-2.5">
+          <div className="rounded-lg bg-indigo-50 p-2 text-indigo-600">
+            <Sparkles className="h-5 w-5" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
+              DepreScope Dashboard
+            </h1>
+            <p className="mt-0.5 text-sm text-slate-500">
+              Explainable NLP for Depression Detection using DistilBERT and SHAP Interpretability
+            </p>
+          </div>
+        </div>
       </div>
 
-      {/* Stats row */}
+      {/* Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {STATS.map((s) => (
           <div
             key={s.label}
-            className="rounded-xl border border-slate-200 bg-white p-5"
+            className="rounded-xl border border-slate-200 bg-white p-5 shadow-xs hover:border-slate-300 transition-colors"
           >
-            <p className="text-2xl font-semibold text-slate-900">{s.value}</p>
-            <p className="mt-1 text-sm text-slate-700 font-medium">{s.label}</p>
-            {s.sub && <p className="mt-0.5 text-xs text-slate-400">{s.sub}</p>}
+            <div className="flex items-center justify-between text-slate-400">
+              <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                {s.label}
+              </span>
+              <TrendingUp className="h-4 w-4 text-emerald-500" />
+            </div>
+            <p className="mt-2 text-3xl font-bold text-slate-900">{s.value}</p>
+            <p className="mt-1 text-xs text-slate-400">{s.sub}</p>
           </div>
         ))}
       </div>
 
-      {/* Modality highlight banner */}
-      {/* <div className="rounded-xl border border-indigo-200 bg-indigo-50 p-5 flex flex-col sm:flex-row items-start sm:items-center gap-4">
-        <div className="rounded-lg bg-indigo-100 p-3 shrink-0">
-          <AudioLines className="h-5 w-5 text-indigo-700" />
-        </div>
-        <div className="flex-1">
-          <p className="text-sm font-semibold text-indigo-900">
-            New — Voice Depression Detection
-          </p>
-          <p className="mt-0.5 text-xs text-indigo-700">
-            Acoustic features (pitch, energy, MFCCs) fused with DistilBERT text
-            embeddings via a weighted late-fusion pipeline, trained on a 31-participant
-            DAIC-WOZ pilot subset. ROC-AUC 0.82.
-          </p>
-        </div>
-        <Link
-          to="/clinical-predict"
-          className="shrink-0 inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-4 py-2 text-xs font-semibold text-white hover:bg-indigo-700 transition-colors"
-        >
-          Try it <ArrowRight className="h-3.5 w-3.5" />
-        </Link>
-      </div> */}
-
-      {/* Feature grid */}
+      {/* Explore Section */}
       <div>
-        <h2 className="text-sm font-semibold text-slate-900 mb-3">Explore</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {SHORTCUTS.map(({ to, icon: Icon, title, body, badge }) => (
+        <div className="mb-4 flex items-center justify-between">
+          <div>
+            <h2 className="text-base font-semibold text-slate-900">Explore System Capabilities</h2>
+            <p className="text-xs text-slate-500">
+              Navigate through data analysis, prediction with explainability, and evaluation benchmarks.
+            </p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {SHORTCUTS.map(({ to, icon: Icon, title, body, tag }) => (
             <Link
               key={to}
               to={to}
-              className="group rounded-xl border border-slate-200 bg-white p-5 hover:border-indigo-300 hover:shadow-sm transition-all"
+              className="group relative rounded-xl border border-slate-200 bg-white p-6 shadow-xs hover:border-indigo-400 hover:shadow-md transition-all flex flex-col justify-between"
             >
-              <div className="flex items-start justify-between">
-                <div className="rounded-lg bg-indigo-50 p-2 relative">
-                  <Icon className="h-4 w-4 text-indigo-600" />
+              <div>
+                <div className="flex items-start justify-between mb-4">
+                  <div className="rounded-lg bg-indigo-50 p-2.5 text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+                    <Icon className="h-5 w-5" />
+                  </div>
+                  <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-[11px] font-medium text-slate-600">
+                    {tag}
+                  </span>
                 </div>
-                <div className="flex items-center gap-2">
-                  {badge && (
-                    <span className="rounded-full bg-indigo-100 px-2 py-0.5 text-[10px] font-semibold text-indigo-700">
-                      {badge}
-                    </span>
-                  )}
-                  <ArrowRight className="h-4 w-4 text-slate-300 group-hover:text-indigo-500 group-hover:translate-x-0.5 transition-all" />
-                </div>
+                <h3 className="text-base font-semibold text-slate-900 group-hover:text-indigo-600 transition-colors">
+                  {title}
+                </h3>
+                <p className="mt-2 text-xs text-slate-500 leading-relaxed">{body}</p>
               </div>
-              <h3 className="mt-3 text-sm font-semibold text-slate-900">{title}</h3>
-              <p className="mt-1 text-sm text-slate-500">{body}</p>
+
+              <div className="mt-5 pt-3 border-t border-slate-100 flex items-center text-xs font-semibold text-indigo-600 gap-1.5 group-hover:translate-x-1 transition-transform">
+                <span>Open {title}</span>
+                <ArrowRight className="h-3.5 w-3.5" />
+              </div>
             </Link>
           ))}
         </div>

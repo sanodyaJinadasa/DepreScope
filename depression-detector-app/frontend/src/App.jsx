@@ -8,7 +8,6 @@ import About from "./pages/About";
 import Dataset from "./pages/Dataset";
 import ModelComparison from "./pages/ModelComparison";
 import Limitations from "./pages/Limitations";
-import ClinicalPredict from "./pages/ClinicalPredict";
 
 export default function App() {
   return (
@@ -20,7 +19,6 @@ export default function App() {
             <Route path="/" element={<Dashboard />} />
             <Route path="/dataset" element={<Dataset />} />
             <Route path="/predict" element={<Predict />} />
-            {/* <Route path="/clinical-predict" element={<ClinicalPredict />} /> */}
             <Route path="/compare" element={<BiasProbeLab />} />
             <Route path="/model-comparison" element={<ModelComparison />} />
             <Route path="/charts" element={<ModelCharts />} />
