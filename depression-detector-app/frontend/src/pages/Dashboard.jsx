@@ -4,8 +4,8 @@ import {
 } from "lucide-react";
 
 const STATS = [
-  { label: "Transformer Accuracy", value: "95.5%", sub: "Fine-tuned DistilBERT on test set" },
-  { label: "Transformer F1-Score", value: "0.885", sub: "Balanced precision and recall" },
+  { label: "Transformer Accuracy", value: "95.7%", sub: "Fine-tuned DistilBERT on test set" },
+  { label: "Transformer F1-Score", value: "0.891", sub: "Balanced precision and recall" },
   { label: "Baseline SVM F1-Score", value: "0.844", sub: "TF-IDF + Linear SVM benchmark" },
   { label: "Raw Dataset Size", value: "2.47M", sub: "Cleaned Reddit post corpus" },
 ];
