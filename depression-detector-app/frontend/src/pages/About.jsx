@@ -20,7 +20,7 @@ export default function About() {
           tool.
         </p> */}
         <div className="pt-2 border-t border-slate-100">
-          <p className="font-medium text-slate-900">Sanodya</p>
+          <p className="font-medium text-slate-900">P.M.Sanodya V. Jinadasa</p>
           <p className="text-slate-500">
             Department of Data Science, Faculty of Computing — Sabaragamuwa University of Sri Lanka
           </p>

@@ -98,13 +98,13 @@ export default function Dataset() {
         </p>
       </div>
 
-      {usingFallback && !loading && (
+      {/* {usingFallback && !loading && (
         <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-2 text-xs text-amber-700">
           Showing placeholder figures — connect the{" "}
           <code className="font-mono">/dataset-stats</code> backend endpoint
           to display live numbers.
         </div>
-      )}
+      )} */}
 
       {/* Stat row */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
