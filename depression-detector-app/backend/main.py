@@ -186,40 +186,43 @@ def compare(request: CompareRequest):
 def get_metrics():
     """
     Returns model comparison metrics for the dashboard / model comparison page.
+    Matches exact values from notebook Part C / Part H (N = 20,000 matched test set).
     """
-    if saved_metrics:
-        return saved_metrics
-
-    # Fallback: hardcoded values from your report, if metrics.json isn't present
     return {
         "svm_matched_results": {
-            "accuracy": 0.9354, "precision": 0.797, "recall": 0.896,
-            "f1": 0.844, "roc_auc": 0.975,
+            "accuracy": 0.9354,
+            "precision": 0.7974,
+            "recall": 0.8958,
+            "f1": 0.8437,
+            "roc_auc": 0.9745,
         },
         "transformer_test_results": {
-            "accuracy": 0.9548, "precision": 0.878, "recall": 0.892,
-            "f1": 0.885, "roc_auc": 0.983,
+            "accuracy": 0.9573,
+            "precision": 0.8825,
+            "recall": 0.9004,
+            "f1": 0.8914,
+            "roc_auc": 0.9858,
         },
-        "confusion_matrix": [[15622, 482], [421, 3475]],
+        "confusion_matrix": [[15637, 467], [388, 3508]],
     }
 
 
 @app.get("/model-metrics")
 def get_model_metrics():
     """
-    Returns metrics formatted for the Model Comparison page.
+    Returns metrics formatted for the Model Comparison and Charts pages.
     """
     return {
         "metrics": [
-            {"name": "SVM", "split": "Train", "accuracy": None, "precision": None, "recall": None, "f1": None, "rocAuc": None},
-            {"name": "SVM", "split": "Test", "accuracy": 0.935, "precision": 0.797, "recall": 0.896, "f1": 0.844, "rocAuc": 0.975},
-            {"name": "DistilBERT", "split": "Train", "accuracy": None, "precision": None, "recall": None, "f1": None, "rocAuc": None},
-            {"name": "DistilBERT", "split": "Validation", "accuracy": 0.957, "precision": 0.883, "recall": 0.899, "f1": 0.891, "rocAuc": 0.985},
-            {"name": "DistilBERT", "split": "Test", "accuracy": 0.955, "precision": 0.878, "recall": 0.892, "f1": 0.885, "rocAuc": 0.983},
+            {"name": "SVM", "split": "Validation", "accuracy": 0.9332, "precision": 0.7896, "recall": 0.8958, "f1": 0.8394, "rocAuc": 0.9746},
+            {"name": "SVM", "split": "Test (Matched)", "accuracy": 0.9354, "precision": 0.7974, "recall": 0.8958, "f1": 0.8437, "rocAuc": 0.9745},
+            {"name": "DistilBERT", "split": "Train (Epoch 3)", "accuracy": 0.9575, "precision": 0.8802, "recall": 0.9048, "f1": 0.8923, "rocAuc": 0.9855},
+            {"name": "DistilBERT", "split": "Validation", "accuracy": 0.9575, "precision": 0.8801, "recall": 0.9048, "f1": 0.8923, "rocAuc": 0.9855},
+            {"name": "DistilBERT", "split": "Test (Matched)", "accuracy": 0.9573, "precision": 0.8825, "recall": 0.9004, "f1": 0.8914, "rocAuc": 0.9858},
         ],
         "confusionMatrices": {
-            "svm": {"tn": 14210, "fp": 1894, "fn": 405, "tp": 3491},
-            "transformer": {"tn": 15622, "fp": 482, "fn": 421, "tp": 3475},
+            "svm": {"tn": 15217, "fp": 887, "fn": 406, "tp": 3490},
+            "transformer": {"tn": 15637, "fp": 467, "fn": 388, "tp": 3508},
         },
     }
 
@@ -227,32 +230,65 @@ def get_model_metrics():
 @app.get("/dataset-stats")
 def get_dataset_stats():
     """
-    Returns dataset stats for the Dataset overview page.
+    Returns dataset stats matching the exact numbers in Part 0 & Part H of the notebook.
     """
     return {
-        "totalPosts": 2470778,
+        "totalRawPosts": 2470778,
+        "totalCleanedPosts": 2465488,
         "classBalance": [
-            {"name": "Normal", "value": 80.5},
-            {"name": "Depression", "value": 19.5},
+            {"name": "Normal", "value": 80.52, "count": 1984473},
+            {"name": "Depression", "value": 19.48, "count": 481015},
         ],
         "splitSizes": [
-            {"split": "Train", "rows": 1725238},
-            {"split": "Validation", "rows": 369694},
-            {"split": "Test", "rows": 369695},
+            {"split": "Train (70%)", "rows": 1725238, "normal": 1389130, "depression": 336108},
+            {"split": "Validation (15%)", "rows": 369694, "normal": 297671, "depression": 72023},
+            {"split": "Test (15%)", "rows": 369695, "normal": 297672, "depression": 72023},
         ],
-        "postLength": [
-            {"bucket": "0-50", "normal": 32000, "depression": 9800},
-            {"bucket": "50-150", "normal": 61000, "depression": 21000},
-            {"bucket": "150-300", "normal": 44000, "depression": 18500},
-            {"bucket": "300-600", "normal": 21000, "depression": 12000},
-            {"bucket": "600+", "normal": 8500, "depression": 6100},
+        "subreddits": [
+            {"name": "r/teenagers (Control)", "count": 1956488, "class": "Normal"},
+            {"name": "r/depression", "count": 290049, "class": "Depression"},
+            {"name": "r/SuicideWatch", "count": 190362, "class": "Depression"},
+            {"name": "r/happy (Control)", "count": 24609, "class": "Normal"},
+            {"name": "r/DeepThoughts (Control)", "count": 9163, "class": "Normal"},
         ],
-        "topWordsDepression": [
-            {"word": "feel", "count": 41000},
-            {"word": "anymore", "count": 28500},
-            {"word": "tired", "count": 26200},
-            {"word": "alone", "count": 24100},
-            {"word": "hopeless", "count": 19800},
+        "textLengthStats": {
+            "normal": {"mean": 273.8, "median": 117.0, "min": 10, "max": 33068},
+            "depression": {"mean": 991.1, "median": 628.0, "min": 11, "max": 33964},
+        },
+        "wordCountStats": {
+            "normal": {"mean": 51.8, "median": 23.0},
+            "depression": {"mean": 191.9, "median": 122.0},
+        },
+        "topFeaturesDepression": [
+            {"word": "depression", "weight": 5.73},
+            {"word": "suicidal", "weight": 4.79},
+            {"word": "suicide", "weight": 4.77},
+            {"word": "depressed", "weight": 4.50},
+            {"word": "psychiatrist", "weight": 3.75},
+            {"word": "antidepressant", "weight": 3.32},
+            {"word": "miserable", "weight": 3.06},
+            {"word": "hopeless", "weight": 3.04},
+            {"word": "being such", "weight": 2.96},
+            {"word": "zoloft", "weight": 2.91},
+            {"word": "kill yourself", "weight": 2.88},
+            {"word": "kill myself", "weight": 2.87},
+            {"word": "depressive", "weight": 2.84},
+            {"word": "ending it", "weight": 2.77},
+            {"word": "feel", "weight": 2.76},
+        ],
+        "topFeaturesNormal": [
+            {"word": "teenagers", "weight": -7.83},
+            {"word": "rant", "weight": -4.47},
+            {"word": "crush", "weight": -4.37},
+            {"word": "my ted", "weight": -3.92},
+            {"word": "minecraft", "weight": -3.83},
+            {"word": "discord", "weight": -3.66},
+            {"word": "yall", "weight": -3.54},
+            {"word": "meme", "weight": -3.51},
+            {"word": "boys", "weight": -3.36},
+            {"word": "teens", "weight": -3.21},
+            {"word": "school", "weight": -2.84},
+            {"word": "tiktok", "weight": -2.73},
         ],
     }
 
